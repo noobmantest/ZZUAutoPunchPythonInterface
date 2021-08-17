@@ -1,6 +1,5 @@
 import flask
 from flask import request
-import auto_punch_ZZU
 import auto_punch_ZZU_requests
 
 '''
