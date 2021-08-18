@@ -1,6 +1,7 @@
 import flask
 from flask import request
 import auto_punch_ZZU_requests
+import json
 
 '''
 flask： web框架，通过flask提供的装饰器@server.route()将普通函数转换为服务
@@ -14,12 +15,24 @@ server = flask.Flask(__name__)
 # @server.route()可以将普通函数转变为服务 登录接口的路径、请求方式
 @server.route('/login', methods=['get', 'post'])
 def login():
-    user_account = request.values.get('user')
-    pwd = request.values.get('password')
-    city_code = request.values.get('city_code')
-    address = request.values.get('address')
+    # 获取字符串json格式，使用post请求
+    data = request.get_data()
+    j_data = json.loads(data)  # 解析json字符串
+    print(j_data)
+    # j_data = json.dumps(json.loads(data), ensure_ascii=False)
+    # print(j_data)
 
-    print(user_account,)
+    user_account = j_data['user']
+    pwd = j_data['password']
+    city_code = j_data['city_code']
+    address = j_data['address']
+
+    # user_account = request.values.get('user')
+    # pwd = request.values.get('password')
+    # city_code = request.values.get('city_code')
+    # address = request.values.get('address')
+
+    print(user_account, pwd, city_code, address)
     res = auto_punch_ZZU_requests.auto_punch(user_account, pwd, city_code, address)
     return res
     # 获取通过url请求传参的数据
