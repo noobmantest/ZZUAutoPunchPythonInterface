@@ -2,6 +2,7 @@ import flask
 from flask import request
 import auto_punch_ZZU_requests
 import json
+from tools import log
 
 '''
 flask： web框架，通过flask提供的装饰器@server.route()将普通函数转换为服务
@@ -15,39 +16,28 @@ server = flask.Flask(__name__)
 # @server.route()可以将普通函数转变为服务 登录接口的路径、请求方式
 @server.route('/login', methods=['get', 'post'])
 def login():
-    # 获取字符串json格式，使用post请求
-    data = request.get_data()
-    j_data = json.loads(data)  # 解析json字符串
-    print(j_data)
-    # j_data = json.dumps(json.loads(data), ensure_ascii=False)
-    # print(j_data)
+    try:
+        log.write_log('收到请求，开始执行')
+        # 获取字符串json格式，使用post请求
+        data = request.get_data()
+        j_data = json.loads(data)  # 解析json字符串
+        log.write_log('接收请求数据 ==== ' + str(j_data))
 
-    user_account = j_data['user']
-    pwd = j_data['password']
-    city_code = j_data['city_code']
-    address = j_data['address']
+        user_account = j_data['user']
+        pwd = j_data['password']
+        city_code = j_data['city_code']
+        address = j_data['address']
 
-    # user_account = request.values.get('user')
-    # pwd = request.values.get('password')
-    # city_code = request.values.get('city_code')
-    # address = request.values.get('address')
-
-    print(user_account, pwd, city_code, address)
-    res = auto_punch_ZZU_requests.auto_punch(user_account, pwd, city_code, address)
-    return res
-    # 获取通过url请求传参的数据
-    # user = request.values.get('user')
-    # 获取url请求传的密码，明文
-    # password = request.values.get('password')
-    # 密码和账号非空
-    # print(user, password)
-    # if user and password:
-    #     res = auto_punch_ZZU.auto_punch(user, password)
-    #     print(res)
-    #     return res
-    # else:
-    #     return "账号或密码为空"
-    # return "上报失败"
+        log.write_log('开始执行脚本')
+        res = auto_punch_ZZU_requests.auto_punch(user_account, pwd, city_code, address)
+        log.write_log('脚本执行结果 === ' + res)
+        return res
+    except Exception as e:
+        print(e)
+        log.write_log('执行失败 ==== ' + str(e))
+        return 'failPunch'
+    else:
+        return 'failPunch'
 
 
 if __name__ == '__main__':

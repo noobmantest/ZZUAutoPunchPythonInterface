@@ -105,10 +105,11 @@ def auto_punch(user_account, pwd, city_code, address):
         "myvs_10": "否",
         "myvs_11": "否",
         "myvs_12": "否",
+        "myvs_13": "g",  # 绿码
         "myvs_13a": myvs_13a,  # 省份（自治区） 数字代表
         "myvs_13b": myvs_13b,  # 直辖区/县 1101/1102
         "myvs_13c": myvs_13c,  # 详细地址
-        "myvs_14": "否",  # 是否为当日返郑人员
+        "myvs_24": "否",  # 是否为当日返郑人员
         "myvs_14b": "",
         "memo22": "[待定]",
         "did": "2",
